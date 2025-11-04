@@ -1,1 +1,10 @@
 autoInstallPeers: true
+
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@parcel/watcher'
+  - '@swc/core'
+  - '@temporalio/core-bridge'
+  - nx
+  - protobufjs
+  - unrs-resolver
