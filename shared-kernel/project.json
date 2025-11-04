@@ -1,0 +1,20 @@
+{
+  "name": "shared-kernel",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "shared-kernel/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/shared-kernel",
+        "tsConfig": "shared-kernel/tsconfig.lib.json",
+        "packageJson": "shared-kernel/package.json",
+        "main": "shared-kernel/src/index.ts",
+        "assets": ["shared-kernel/*.md"]
+      }
+    }
+  }
+}
