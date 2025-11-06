@@ -8,15 +8,19 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
+    "target": "es2017",
+    "module": "commonjs",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@context-platform/shared-kernel": ["shared-kernel/src/index.ts"]
+      "@platform/*": [".platform/*"],
+      "@context-platform/*": ["apps/temporal-worker/src/*"],
+      "@libs/*": ["libs/*"],
+      "@apps/*": ["apps/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
+  
 }

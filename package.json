@@ -2,8 +2,16 @@
   "name": "@context-platform/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
   "private": true,
+  "scripts": {
+    "start": "nx serve api",
+    "start.worker": "nx serve temporal-worker",
+    "start.watch": "nx serve temporal-worker",
+    "test": "pnpm nx run-many -t test",
+    "build": "nx build temporal-worker",
+    "lint": "nx lint",
+    "format": "prettier --write ."
+  },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
@@ -46,6 +54,7 @@
     "prettier": "^2.6.2",
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0",

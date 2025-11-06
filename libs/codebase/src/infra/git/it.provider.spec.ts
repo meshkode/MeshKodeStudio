@@ -1,6 +1,5 @@
 import { GitCliRepoProvider } from "../git/git.provider";
 import * as exec from "../git/git.exec";
-// 1. اعمل امبورت للـ service اللي هتختبرها
 import { WorkdirService } from "../storage/workdir.service"; 
 import {
   LS_REMOTE_HEADS_MAIN,
@@ -12,7 +11,8 @@ const REPO_URL = "https://example.com/repo.git";
 jest.mock("../git/git.exec", () => ({
   sh: jest.fn(),
 }));
-jest.mock("../workdir/workdir.service"); 
+jest.mock("../storage/workdir.service");
+
 
 describe("GitCliRepoProvider (Unit Test with Mocks)", () => {
   jest.setTimeout(5000);

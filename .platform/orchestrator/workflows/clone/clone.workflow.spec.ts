@@ -1,6 +1,6 @@
 import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { Worker } from '@temporalio/worker';
-import { CloneRepoWorkflow } from '../clone/clone.workflow';
+import { cloneRepoWorkflow } from '../clone/clone.workflow';
 import * as activities from '../clone/clone.activities';
 import { createTestEnv } from '../../../../testing/src/temporal/test-env';
 
@@ -28,7 +28,7 @@ describe('CloneRepoWorkflow FULL integration', () => {
     });
 
     const result = await worker.runUntil(
-      client.workflow.execute(CloneRepoWorkflow, {
+      client.workflow.execute(cloneRepoWorkflow, {
         args: [
           {
             repoUrl: 'https://github.com/octocat/Hello-World.git',
@@ -78,7 +78,7 @@ describe('CloneRepoWorkflow (Unit Test)', () => {
     });
 
     const result = await worker.runUntil(
-      client.workflow.execute(CloneRepoWorkflow, {
+      client.workflow.execute(cloneRepoWorkflow, {
         args: [
           {
             repoUrl: 'https://any.repo.com/fake.git',
