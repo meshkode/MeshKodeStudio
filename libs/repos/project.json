@@ -1,0 +1,13 @@
+{
+  "name": "repos",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/repos/src",
+  "projectType": "library",
+  "tags": ["scope:repos"],
+  "targets": {
+    "test": {
+      "options": { "passWithNoTests": true }
+    }
+  }
+}
+

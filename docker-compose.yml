@@ -31,7 +31,7 @@ services:
       - "7233:7233" # frontend
 
   temporal-web:
-    image: temporalio/web:2.28.2
+    image: temporalio/web:latest
     depends_on:
       - temporal
     environment:

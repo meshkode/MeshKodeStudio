@@ -1,0 +1,13 @@
+{
+  "name": "http",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/http/src",
+  "projectType": "library",
+  "tags": ["scope:http"],
+  "targets": {
+    "test": {
+      "options": { "passWithNoTests": true }
+    }
+  }
+}
+

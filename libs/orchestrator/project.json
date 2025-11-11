@@ -1,0 +1,13 @@
+{
+  "name": "orchestrator",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/orchestrator/src",
+  "projectType": "library",
+  "tags": ["scope:orchestrator"],
+  "targets": {
+    "test": {
+      "options": { "passWithNoTests": true }
+    }
+  }
+}
+

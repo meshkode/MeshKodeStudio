@@ -17,6 +17,7 @@
     "paths": {
       "@platform/*": [".platform/*"],
       "@context-platform/*": ["apps/temporal-worker/src/*"],
+      "@proj/*": ["libs/*"],
       "@libs/*": ["libs/*"],
       "@apps/*": ["apps/*"]
     }
