@@ -6,8 +6,12 @@
   "tags": ["scope:orchestrator"],
   "targets": {
     "test": {
-      "options": { "passWithNoTests": true }
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/orchestrator"],
+      "options": {
+        "jestConfig": "libs/orchestrator/jest.config.ts",
+        "passWithNoTests": false
+      }
     }
   }
 }
-

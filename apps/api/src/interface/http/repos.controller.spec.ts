@@ -67,6 +67,18 @@ describe("ReposController (e2e)", () => {
       .expect(400);
   });
 
+  it("POST /v1/repos/clone returns 503 when temporal unavailable", async () => {
+    startCloneMock.mockRejectedValueOnce(new Error("temporal-unavailable"));
+
+    await request(app.getHttpServer())
+      .post("/v1/repos/clone")
+      .send({ repoUrl: "https://example/repo.git", ref: "main" })
+      .expect(503)
+      .expect(({ body }) => {
+        expect(body).toEqual({ message: "temporal unavailable" });
+      });
+  });
+
   it("GET /v1/repos/clone/:id returns running", async () => {
     getHandleMock.mockReturnValueOnce({
       workflowId: "clone-123",
@@ -116,6 +128,36 @@ describe("ReposController (e2e)", () => {
       .expect(422)
       .expect(({ body }) => {
         expect(body.message).toBe("invalid ref");
+      });
+  });
+
+  it("GET /v1/repos/clone/:id returns 503 when temporal unavailable", async () => {
+    getHandleMock.mockReturnValueOnce({
+      workflowId: "clone-500",
+      result: jest.fn().mockRejectedValue(new Error("temporal-unavailable")),
+      describe: jest.fn(),
+    });
+
+    await request(app.getHttpServer())
+      .get("/v1/repos/clone/clone-500")
+      .expect(503)
+      .expect(({ body }) => {
+        expect(body).toEqual({ message: "temporal unavailable" });
+      });
+  });
+
+  it("GET /v1/repos/clone/:id returns 503 when describe fails with temporal unavailable", async () => {
+    getHandleMock.mockReturnValueOnce({
+      workflowId: "clone-501",
+      result: jest.fn().mockRejectedValue(new Error("unexpected failure")),
+      describe: jest.fn().mockRejectedValue(new Error("temporal-unavailable")),
+    });
+
+    await request(app.getHttpServer())
+      .get("/v1/repos/clone/clone-501")
+      .expect(503)
+      .expect(({ body }) => {
+        expect(body).toEqual({ message: "temporal unavailable" });
       });
   });
 });

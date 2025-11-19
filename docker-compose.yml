@@ -28,7 +28,7 @@ services:
       POSTGRES_SEEDS: postgres
       DYNAMIC_CONFIG_FILE_PATH: /etc/temporal/config/dynamicconfig/development.yaml
     ports:
-      - "7233:7233" # frontend
+      - "7233:7233" 
 
   temporal-web:
     image: temporalio/web:latest

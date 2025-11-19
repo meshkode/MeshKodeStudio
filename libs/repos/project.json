@@ -6,8 +6,12 @@
   "tags": ["scope:repos"],
   "targets": {
     "test": {
-      "options": { "passWithNoTests": true }
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/repos"],
+      "options": {
+        "jestConfig": "libs/repos/jest.config.ts",
+        "passWithNoTests": false
+      }
     }
   }
 }
-

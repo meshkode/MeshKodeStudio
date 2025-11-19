@@ -12,6 +12,7 @@ export interface TemporalCloneHandle {
   result: (opts?: { followRuns?: boolean }) => Promise<CloneResult>;
   describe: () => Promise<{ status: { name: string } }>;
 }
+
 export interface TemporalClientApi {
   startClone(input: CloneStartArgs): Promise<TemporalCloneHandle>;
   getHandle(id: string): TemporalCloneHandle;
@@ -21,7 +22,14 @@ export interface TemporalClientApi {
 export async function temporalClient(): Promise<TemporalClientApi> {
   const address = process.env.TEMPORAL_ADDRESS ?? "localhost:7233";
   const taskQueue = process.env.TEMPORAL_TASK_QUEUE ?? "context-task-queue";
-  const connection = await Connection.connect({ address });
+
+  let connection;
+  try {
+    connection = await Connection.connect({ address });
+  } catch (e) {
+    throw new Error("temporal-unavailable");
+  }
+
   const client = new Client({ connection });
 
   return {
@@ -31,17 +39,23 @@ export async function temporalClient(): Promise<TemporalClientApi> {
         workflowId: `clone-${randomUUID()}`,
         args: [input],
       });
+
       return {
         workflowId: handle.workflowId,
-        result: (_opts?: { followRuns?: boolean }) => handle.result(),
+        // Temporal 1.13 type defs don't yet expose the optional WorkflowResultOptions argument.
+        // @ts-expect-error forwarding followRuns flag until upstream types catch up
+        result: (opts) => handle.result(opts),
         describe: () => handle.describe(),
       };
     },
+
     getHandle(id: string) {
       const handle = client.workflow.getHandle(id);
       return {
         workflowId: id,
-        result: (_opts?: { followRuns?: boolean }) => handle.result(),
+        // Temporal 1.13 type defs don't yet expose the optional WorkflowResultOptions argument.
+        // @ts-expect-error forwarding followRuns flag until upstream types catch up
+        result: (opts) => handle.result(opts),
         describe: () => handle.describe(),
       };
     },
