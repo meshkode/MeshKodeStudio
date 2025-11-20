@@ -1,0 +1,14 @@
+{
+	"name": "platform",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/platform/src",
+	"projectType": "library",
+	"tags": ["scope:platform"],
+	"targets": {
+		"test": {
+            "executor": "@nx/jest:jest",
+			"outputs": ["{workspaceRoot}/coverage/libs/platform"],
+			"options": { "passWithNoTests": true }
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "platform-infra",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/platform-infra/src",
+	"projectType": "library",
+	"tags": ["scope:platform-infra"],
+	"targets": {
+		"test": {
+			"executor": "@nx/jest:jest",
+			"outputs": ["{workspaceRoot}/coverage/libs/platform-infra"],
+			"options": {
+				"passWithNoTests": true
+			}
+		}
+	}
+}

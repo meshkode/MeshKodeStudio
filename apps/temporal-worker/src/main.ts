@@ -1,6 +1,6 @@
 import { NativeConnection, Worker } from "@temporalio/worker";
 import { join } from "node:path";
-import * as activities from "@platform/orchestrator/workflows/clone/clone.activities";
+import * as activities from "@libs/orchestrator/src/workflows/clone/clone.activities";
 
 async function bootstrap() {
   const temporalAddress = process.env.TEMPORAL_ADDRESS ?? "localhost:7233";

@@ -1,10 +1,10 @@
-import { GitCliRepoProvider } from "../git/git.provider";
-import * as exec from "../git/git.exec";
-import { WorkdirService } from "../storage/workdir.service"; 
+import { GitCliRepoProvider } from "./git.provider";
+import * as exec from "./git.exec";
+import { WorkdirService } from "../workdir/workdir.service"; 
 import {
   LS_REMOTE_HEADS_MAIN,
   LS_REMOTE_TAG_V1,
-} from "../../../../../testing/src/git/fixtures";
+} from "../../../testing/src/git/fixtures";
 
 const REPO_URL = "https://example.com/repo.git";
 

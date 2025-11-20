@@ -1,7 +1,7 @@
 import { proxyActivities } from "@temporalio/workflow";
  import type { cloneInput, cloneResult } from "./clone.types.ts";
 
-import * as activities from "../clone/clone.activities";
+import * as activities from "./clone.activities";
 const { resolveCommit, fetchSnapshot } = proxyActivities<typeof activities>({
   startToCloseTimeout: "5 minute", 
   retry: { 

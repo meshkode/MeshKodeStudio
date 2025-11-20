@@ -1,0 +1,29 @@
+{
+	"name": "temporal-worker",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"root": "apps/temporal-worker",
+	"sourceRoot": "apps/temporal-worker/src",
+	"projectType": "application",
+	"tags": [],
+	"targets": {
+		"build": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "tsc -p apps/temporal-worker/tsconfig.json"
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"options": {
+				"buildTarget": "temporal-worker:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "temporal-worker:build"
+				}
+			}
+		}
+	}
+}

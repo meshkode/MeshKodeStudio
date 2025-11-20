@@ -1,5 +1,5 @@
-import { sh } from "../git/git.exec";
-import { WorkdirService } from "../storage/workdir.service"; 
+import { sh } from "./git.exec";
+import { WorkdirService } from "../workdir/workdir.service"; 
 
 export class GitCliRepoProvider {
   private readonly timeout = 60_000;
