@@ -1,5 +1,5 @@
-import { GitCliRepoProvider } from "../../../../platform-infra/src/git/git.provider";
-import { WorkdirService } from "../../../../platform-infra/src/workdir/workdir.service"; 
+import { GitCliRepoProvider } from "@libs/platform-infra/src/git/git.provider";
+import { WorkdirService } from "@libs/platform-infra/src/workdir/workdir.service"; 
 
 const workdirService = new WorkdirService();
 

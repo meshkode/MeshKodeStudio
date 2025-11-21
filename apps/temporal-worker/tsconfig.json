@@ -1,3 +1,4 @@
+// apps/temporal-worker/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -7,7 +8,11 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    
+    // ✨ تأكد من إضافة هذا السطر هنا ✨
+    "rootDir": "../../"
+    
   },
   "include": ["src/**/*.ts"]
 }
