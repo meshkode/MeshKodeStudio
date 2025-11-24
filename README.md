@@ -1,82 +1,182 @@
-# ContextPlatform
+# Git Repository Cloning Service
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A scalable, fault-tolerant service for cloning Git repositories using **Temporal Workflows** and **NestJS**. This project follows the **Hexagonal Architecture (Ports and Adapters)** pattern to ensure separation of concerns and testability.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## � What It Does (Simple Explanation)
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+In simple terms, this project is an API that lets you clone Git repositories in the background. You give it a URL (like a GitHub repo), and it handles the cloning process reliably, even retrying if something goes wrong. It's designed to handle many clone requests at once without crashing.
 
-## Finish your CI setup
+## �🚀 Features
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/WllaAnCMZc)
+- **Asynchronous Cloning**: Handles long-running clone operations reliably using Temporal workflows.
+- **Fault Tolerance**: Automatically retries failed operations (e.g., network glitches) with exponential backoff.
+- **Scalable Architecture**: Separates the API (HTTP layer) from the Worker (execution layer).
+- **Hexagonal Architecture**: Core domain logic is isolated from infrastructure concerns (Git CLI, File System).
+- **Type-Safe**: Built with TypeScript and Nx for robust monorepo management.
 
+## 🏗️ Architecture
 
-## Run tasks
+The project is structured as an **Nx Monorepo** with the following libraries and applications:
 
-To run the dev server for your app, use:
+### Applications (`apps/`)
 
-```sh
+- **`api`**: A NestJS REST API that acts as the entry point. It receives HTTP requests and starts Temporal workflows.
+- **`temporal-worker`**: A dedicated worker application that listens to the Temporal task queue and executes workflows and activities.
+
+### Libraries (`libs/`)
+
+- **`platform`**: Contains the core **Ports** (interfaces) and domain entities. This layer is pure and has no external dependencies.
+- **`platform-infra`**: Contains the **Adapters** (implementations) for the ports, such as the Git CLI wrapper and File System services.
+- **`orchestrator`**: Contains the **Temporal Workflows** and Activities definitions.
+- **`repos`**: Domain logic specific to repository management.
+- **`shared-kernel`**: Shared utilities, types, and constants used across the system.
+
+## 🛠️ Tech Stack
+
+- **Orchestration**: [Temporal.io](https://temporal.io/)
+- **Framework**: [NestJS](https://nestjs.com/)
+- **Monorepo Tool**: [Nx](https://nx.dev/)
+- **Language**: TypeScript
+- **Infrastructure**: Git CLI, Docker (for Temporal server)
+
+## 📋 Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** (v18+)
+- **pnpm** (or npm/yarn)
+- **Docker** & **Docker Compose** (for running Temporal server)
+- **Temporal CLI** (optional, for local development)
+
+## ⚙️ Setup & Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone <repo-url>
+   cd <repo-name>
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pnpm install
+   ```
+
+## 🏃‍♂️ Running the Application
+
+You need to run the following processes to have the full system working.
+
+### 1. Start Infrastructure (Docker)
+
+Start the required services (Postgres, Temporal) using Docker Compose.
+
+```bash
+docker compose up -d
+```
+
+### 2. Start the API
+
+The API accepts HTTP requests and triggers workflows.
+
+```bash
 npx nx serve api
 ```
 
-To create a production bundle:
+_The API will be available at http://localhost:3000_
 
-```sh
-npx nx build api
+> **Note**: If port 3000 is in use, you can change it by setting the `PORT` environment variable: `PORT=3001 npx nx serve api`
+
+### 3. Start Temporal Server (Dev Mode)
+
+If you are not using the Docker-based Temporal server, you can start the dev server using the CLI.
+
+```bash
+temporal server start-dev
 ```
 
-To see all available targets to run for a project, run:
+_The UI will be available at http://localhost:8233_
 
-```sh
-npx nx show project api
+### 4. Start the Worker
+
+The worker executes the actual workflows and activities.
+
+```bash
+npx nx serve temporal-worker
+```
+> **Note**: You can send requests to the worker using the Temporal CLI.
+```bash
+temporal workflow start --task-queue context-task-queue --type cloneRepoWorkflow --workflow-id test-1 --input '{"repoUrl": "https://github.com/octocat/Hello-World.git", "ref": "master"}'
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## 🔌 API Usage
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Clone a Repository
 
-## Add new projects
+**POST** `/v1/repos/clone`
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+Request Body:
 
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/nest:app demo
+```json
+{
+  "repoUrl": "https://github.com/octocat/Hello-World.git",
+  "ref": "master"
+}
 ```
 
-To generate a new library, use:
+Response:
 
-```sh
-npx nx g @nx/node:lib mylib
+```json
+{
+  "workflowId": "clone-uuid-123",
+  "status": "RUNNING"
+}
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+### Get Clone Status & Result
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+**GET** `/v1/repos/clone/:id`
 
+Replace `:id` with the `workflowId` returned from the clone request.
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Response (Success):
 
-## Install Nx Console
+```json
+{
+  "status": "COMPLETED",
+  "result": {
+    "sha": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+    "path": "/tmp/repo-XXXXXX"
+  }
+}
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## 🧪 Running Tests
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Run unit tests for specific projects:
 
-## Useful links
+```bash
+# Run tests for the orchestrator (workflows)
+npx nx test orchestrator
 
-Learn more:
+# Run tests for the infrastructure layer
+npx nx test platform-infra
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+# Run all tests
+npx nx run-many --target=test --all
+```
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📂 Project Structure
+
+```
+├── apps/
+│   ├── api/                 # NestJS REST API
+│   └── temporal-worker/     # Temporal Worker
+├── libs/
+│   ├── orchestrator/        # Workflows & Activities
+│   ├── platform/            # Domain Interfaces (Ports)
+│   ├── platform-infra/      # Implementations (Adapters)
+│   ├── repos/               # Repository Domain Logic
+│   └── shared-kernel/       # Shared Utilities
+├── nx.json                  # Nx Configuration
+└── package.json             # Dependencies
+```
