@@ -11,7 +11,7 @@ const REPO_URL = "https://example.com/repo.git";
 jest.mock("../git/git.exec", () => ({
   sh: jest.fn(),
 }));
-jest.mock("../storage/workdir.service");
+jest.mock("../workdir/workdir.service");
 
 
 describe("GitCliRepoProvider (Unit Test with Mocks)", () => {

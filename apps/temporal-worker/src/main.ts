@@ -10,8 +10,9 @@ async function bootstrap() {
 
   const workflowsPath = join(
     process.cwd(),
-    ".platform",
+    "libs",
     "orchestrator",
+    "src",
     "workflows",
     "clone",
     "clone.workflow.ts"

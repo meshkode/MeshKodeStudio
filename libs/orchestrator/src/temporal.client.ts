@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 export type CloneStartArgs = { repoUrl: string; ref: string };
 export interface CloneResult {
   sha: string;
-  path: string; // path never returned publicly
+  path: string;
 }
 
 export interface TemporalCloneHandle {

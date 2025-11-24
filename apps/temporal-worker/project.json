@@ -29,19 +29,9 @@
     },
     "serve": {
       "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
-      "dependsOn": [
-        "inline-bundle"
-      ],
       "options": {
-        "commands": [
-          "ts-node -r tsconfig-paths/register --files apps/temporal-worker/src/main.ts"
-        ],
-        "cwd": "./",
-        "forwardAllArgs": true
-      },
-      "configurations": {
-        "development": {}
+        "command": "npx ts-node -r tsconfig-paths/register apps/temporal-worker/src/main.ts",
+        "cwd": "."
       }
     }
   }
