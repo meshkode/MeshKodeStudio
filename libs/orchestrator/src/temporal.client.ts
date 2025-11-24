@@ -34,7 +34,7 @@ export async function temporalClient(): Promise<TemporalClientApi> {
 
   return {
     async startClone(input: CloneStartArgs) {
-      const handle = await client.workflow.start("CloneRepoWorkflow", {
+      const handle = await client.workflow.start("cloneRepoWorkflow", {
         taskQueue,
         workflowId: `clone-${randomUUID()}`,
         args: [input],

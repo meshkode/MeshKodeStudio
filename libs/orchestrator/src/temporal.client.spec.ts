@@ -50,7 +50,7 @@ describe("temporalClient", () => {
 
     expect(connectMock).toHaveBeenCalledWith({ address: "localhost:7233" });
     expect(workflowStartMock).toHaveBeenCalledWith(
-      "CloneRepoWorkflow",
+      "cloneRepoWorkflow",
       expect.objectContaining({
         taskQueue: "context-task-queue",
         workflowId: "clone-uuid-123",
@@ -71,7 +71,7 @@ describe("temporalClient", () => {
 
     expect(connectMock).toHaveBeenCalledWith({ address: "temporal:7234" });
     expect(workflowStartMock).toHaveBeenCalledWith(
-      "CloneRepoWorkflow",
+      "cloneRepoWorkflow",
       expect.objectContaining({ taskQueue: "custom-queue" })
     );
   });
