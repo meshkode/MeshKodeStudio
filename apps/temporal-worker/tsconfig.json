@@ -8,12 +8,8 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    "rootDir": "../../"
   },
-  "include": [
-    "src/**/*.ts",
-    "../../libs/orchestrator/src/**/*.ts",
-    "../../libs/platform-infra/src/**/*.ts",
-    "../../libs/platform/src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }
