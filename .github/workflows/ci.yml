@@ -3,7 +3,6 @@ name: CI
 on:
   push:
     # Run on pushes to any branch
-  pull_request:
 
 permissions:
   actions: read

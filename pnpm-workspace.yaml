@@ -1,3 +1,8 @@
+packages:
+  - 'apps/*'
+  - 'libs/*'
+  - 'shared-kernel/*'
+
 autoInstallPeers: true
 
 onlyBuiltDependencies:
