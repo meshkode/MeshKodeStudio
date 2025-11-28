@@ -1,0 +1,2 @@
+# Ignore auto-generated Temporal workflow bundle
+src/workflows/workflow-bundle.js
