@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
+    # Run on pushes to any branch
   pull_request:
 
 permissions:
